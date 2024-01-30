@@ -1,20 +1,21 @@
-# Deploying a React App* to GitHub Pages
+**********記得把React App變成應用程式
+# 怎麼部署 React 應用程式到 GitHub Pages
 
-\* created using `create-react-app`
+\* 使用 `create-react-app` 進行
 
-# Introduction
+# 引言
 
-In this tutorial, I'll show you how you can create a React app and deploy it to GitHub Pages.
+在這個教學中，我會告訴你怎麼建立、部署一個 React App 到 GitHub Pages 上。
 
-To create the React app, I'll be using [`create-react-app`](https://create-react-app.dev/), which is a tool people can use to create a React app from scratch. To deploy the React app, I'll be using [`gh-pages`](https://github.com/tschaub/gh-pages), which is an npm package people can use to deploy things to [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages), a free web hosting service provided by GitHub.
+我會使用 [`create-react-app`](https://create-react-app.dev/) 來建立一個 React App 。這個工具能夠幫我們從零開始打造一個 React App。至於部署的步驟，我會使用一個 npm 套件 [`gh-pages`](https://github.com/tschaub/gh-pages) 來部署應用程式到 GitHub提供的免費代管服務 GitHub Pages 上。
 
-If you follow along with this tutorial, you'll end up with a new React app—hosted on GitHub Pages—which you can then customize.
+在跟著教學完成之後，你會得到一個由 Github Pages 代管的、可以再任你編輯的 React App。
 
-# Tutorial
+# 教學
 
-## Prerequisites
+## 前置作業
 
-1. [Node and npm](https://nodejs.org/en/download/) are installed. Here are the versions I'll be using while making this tutorial:
+1. 安裝好 [Node 以及 npm](https://nodejs.org/en/download/)，這個教學將會使用以下版本:
 
     ```shell
     $ node --version
@@ -23,51 +24,51 @@ If you follow along with this tutorial, you'll end up with a new React app—hos
     $ npm --version
     8.1.2
     ```
-    > Installing npm adds two commands to the system—`npm` and `npx`—both of which I'll be using while making this tutorial.
+    
+    >安裝 npm 會在你的系統中加入 `npm`、`npx` 指令，接下來我們會一直使用到它們。
 
-2. [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) is installed. Here's the version I'll be using while making this tutorial:
+2. 安裝好 [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)，這個教學將會使用以下版本:
 
     ```shell
     $ git --version
     git version 2.29.1.windows.1
     ```
 
-3. A [GitHub](https://github.com/signup) account. :octocat:
+3. 建立好自己的 [GitHub](https://github.com/signup) 帳號。 :octocat:
 
-## Procedure
+## 建立、部屬步驟
 
-### 1. Create an **empty** repository on GitHub
+### 1. 在 GitHub 建立一個*空的*存放庫 
 
-1. Sign into your GitHub account.
-2. Visit the [Create a new repository](https://github.com/new) form.
-3. Fill in the form as follows:
-    - **Repository name:** You can enter any name you want\*.
+1. 登入你的 GitHub 帳號。
+2. 前往 [Create a new repository](https://github.com/new)。
+3. 依照下面的方式填入資料：
+    - **存放庫名稱** 可以任意填入\*.
+        > \*如果要建立的是 [專案網頁](https://pages.github.com/#project-site)，任何名稱都沒有問題，但如果你要建立[個人網頁](https://pages.github.com/#user-site)，GitHub [要求](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#types-of-github-pages-sites) 存放庫名稱要以 `{username}.github.io` 的格式命名 (如 `gitname.github.io`)
 
-        > \* For a [project site](https://pages.github.com/#project-site), you can enter any name you want. For a [user site](https://pages.github.com/#user-site), GitHub [requires](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#types-of-github-pages-sites) that the repository's name have the following format: `{username}.github.io` (e.g. `gitname.github.io`)
+        >這個名字會出現在： (1) GitHub 上提到這個存放庫的所有時機 、 (2) 連結到這個存放庫的網址 、 (3) 部署之後，連結到這個應用程式的網址。
+
+
+        > 在這裡，我將以專頁網頁為例進行教學。
+
+        我在這裡填入 `react-gh-pages`
         
-        > The name you enter will show up in a few places: (a) in references to the repository throughout GitHub, (b) in the URL of the repository, and (c) in the URL of the deployed React app.
+   - **存放庫隱私設定** 選擇 _公開(Public)_ (或是 _不公開(Private)_\*).
 
-        > In this tutorial, I'll be deploying the React app as a project site.
+        > \* 對 [免費使用](https://docs.github.com/en/get-started/learning-about-github/githubs-products#github-free-for-user-accounts) 帳號而言, 只有*公開*存放庫可以用來部署 GitHub Pages。但 [GitHub Pro](https://docs.github.com/en/get-started/learning-about-github/githubs-products#github-pro) 或是其他類型的付費使用者則可以自行選擇要*公開*存放庫還是*不公開*存放庫。
 
-        I'll enter: `react-gh-pages`
-        
-   - **Repository privacy:** Select _Public_ (or _Private_\*).
+        這裡我選擇 _公開_
 
-        > \* For [GitHub Free](https://docs.github.com/en/get-started/learning-about-github/githubs-products#github-free-for-user-accounts) users, the only type of repository that can be used with GitHub Pages is _Public_. For [GitHub Pro](https://docs.github.com/en/get-started/learning-about-github/githubs-products#github-pro) users (and other paying users), both _Public_ and _Private_ repositories can be used with GitHub Pages.
+   - **初始化存放庫** 不必選取任何其他核取方塊。
+        >這麼做才會讓 GitHub 才不會先幫你建立 `README.md`, `.gitignore`, 或是 `LICENSE`，而是建立一個空白、乾淨的的存放庫。
+4. 按下建立。
 
-        I'll choose: _Public_
+現在，你已經設定好一個存放在 GitHub 上的空白存放庫了。
 
-   - **Initialize repository:** Leave all checkboxes empty.
+### 2. 建立一個 React 應用程式。
 
-        > That will make it so GitHub creates an empty repository, instead of pre-populating the repository with a `README.md`, `.gitignore`, and/or `LICENSE` file.
-4. Submit the form.
-
-At this point, your GitHub account contains an empty repository, having the name and privacy type that you specified.
-
-### 2. Create a React app
-
-1. Create a React app named `my-app`:
-
+1. 建立一個叫做 `my-app` 的應用程式:
+    >如果你想用 `my-app` 以外的名字，
     > In case you want to use a different name from `my-app` (e.g. `web-ui`), you can accomplish that by replacing all occurrences of `my-app` in this tutorial, with that other name (i.e. `my-app` --> `web-ui`).
   
     ```shell
