@@ -1,15 +1,15 @@
-**********記得把React App變成應用程式
 # 怎麼部署 React 應用程式到 GitHub Pages
-
+[English (original)](https://github.com/gitname/react-gh-pages)
+<br>
 \* 使用 `create-react-app` 進行
 
 # 引言
 
-在這個教學中，我會告訴你怎麼建立、部署一個 React App 到 GitHub Pages 上。
+在這個教學中，我會告訴你怎麼建立、部署一個 React  到 GitHub Pages 上。
 
-我會使用 [`create-react-app`](https://create-react-app.dev/) 來建立一個 React App 。這個工具能夠幫我們從零開始打造一個 React App。至於部署的步驟，我會使用一個 npm 套件 [`gh-pages`](https://github.com/tschaub/gh-pages) 來部署應用程式到 GitHub提供的免費代管服務 GitHub Pages 上。
+我會使用 [`create-react-app`](https://create-react-app.dev/) 來建立一個 React 應用程式 。這個工具能夠幫我們從零開始打造一個 React 應用程式。至於部署的步驟，我會使用一個 npm 套件 [`gh-pages`](https://github.com/tschaub/gh-pages) 來部署應用程式到 GitHub提供的免費代管服務 GitHub Pages 上。
 
-在跟著教學完成之後，你會得到一個由 Github Pages 代管的、可以再任你編輯的 React App。
+在跟著教學完成之後，你會得到一個由 Github Pages 代管的、可以再任你編輯的 React 應用程式。
 
 # 教學
 
@@ -68,78 +68,81 @@
 ### 2. 建立一個 React 應用程式。
 
 1. 建立一個叫做 `my-app` 的應用程式:
-    >如果你想用 `my-app` 以外的名字，
-    > In case you want to use a different name from `my-app` (e.g. `web-ui`), you can accomplish that by replacing all occurrences of `my-app` in this tutorial, with that other name (i.e. `my-app` --> `web-ui`).
+    >如果你想用 `my-app` 以外的名字，比如說 `web-ui`，就將以下提到 `my-app` 的所有地方替換成你選擇的名字就好 (如 `my-app` --> `web-ui`)
+
   
     ```shell
     $ npx create-react-app my-app
     ```
+    >上面的指令會幫你建立一個 javascript 語言的 React 應用程式。如果你想要使用 [TypeScript](https://create-react-app.dev/docs/adding-typescript/#installation) 來建立 React 應用程式，就改為使用下面的指令：
 
-    > That command will create a React app written in JavaScript. To create one written in [TypeScript](https://create-react-app.dev/docs/adding-typescript/#installation), you can issue this command instead:
     > ```shell
     > $ npx create-react-app my-app --template typescript
     > ```
+    這兩個指令都會幫你建立一個叫 `my-app` 的資料夾，裡面包含一個 React 應用程式的原始碼。
 
-    That command will create a new folder named `my-app`, which will contain the source code of a React app.
+    > 除了包含 React 應用程式的原始碼之外，該資料夾也是一個 Git 存放庫。在第 6 步中，我們將會利用這個特性。
 
-    > In addition to containing the source code of the React app, that folder is also a Git repository. That characteristic of the folder will come into play in Step 6.
+    #### 分支名稱: `master` vs. `main`
 
-    > #### Branch names: `master` vs. `main`
-    > 
-    > The Git repository will have one branch, which will be named either (a) `master`, the default for a fresh Git installation; or (b) the value of the Git configuration variable, `init.defaultBranch`, if your computer is running Git version 2.28 or later _and_ you have [set that variable](https://github.blog/2020-07-27-highlights-from-git-2-28/#introducing-init-defaultbranch) in your Git configuration (e.g. via `$ git config --global init.defaultBranch main`).
+    >Git存放庫將有一個被命名為(a) master，這是新安裝Git的預設；或者(b) 如果您的電腦運行的是Git 2.28或更高版本，並且你在Git配置中有設定 [`init.defaultBranch`](https://github.blog/2020-07-27-highlights-from-git-2-28/#introducing-init-defaultbranch) 這個變數的值，則分支將被命名為 init.defaultBranch 的值（如以 $ git config --global init.defaultBranch main 設定）。
+
     >
-    > Since I have not set that variable in my Git installation, the branch in my repository will be named `master`. In case the branch in your repository has a different name (which you can check by running  `$ git branch`), such as `main`; you can **replace** all occurrences of `master` throughout the remainder of this tutorial, with that other name (e.g. `master` → `main`).
+    >由於我沒有在我的 Git 安裝中設定該變數，因此我的存放庫中的分支將被命名為 `master`。如果您的存放庫中的分支有不同的名稱（可以通過執行 `$ git branch` 來檢查），例如 `main`，你可以**替換**本教程其餘部分中所有出現的 `master`，將其替換為其他名稱（例如 `master` → `main`）。
 
-2. Enter the newly-created folder:
+2. 進入剛剛建立好的資料夾 :
   
     ```shell
     $ cd my-app
     ```
 
-At this point, there is a React app on your computer and you are in the folder that contains its source code. All of the remaining commands shown in this tutorial can be run from that folder.
+到這個時候，你的電腦上已經有一個 React 應用程式，而您正在包含其原始碼的資料夾中。本教學中接下來的所有指令都能從該資料夾中執行。
 
-### 3. Install the `gh-pages` npm package
+### 3. 安裝 `gh-pages` npm 套件
 
-1. Install the [`gh-pages`](https://github.com/tschaub/gh-pages) npm package and designate it as a [development dependency](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file):
+1. 安裝 [`gh-pages`](https://github.com/tschaub/gh-pages) npm 套件 並將它指定成 [依賴套件](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file):
  
     ```shell
     $ npm install gh-pages --save-dev
     ```
 
-At this point, the `gh-pages` npm package is installed on your computer and the React app's dependence upon it is documented in the React app's `package.json` file.
 
-### 4. Add a `homepage` property to the `package.json` file
+到這個時候，`gh-pages` npm 套件已經安裝在你的電腦上，且 React 應用程式對它的依賴已經紀錄在 React 應用程式的 `package.json` 中。
 
-1. Open the `package.json` file in a text editor.
+### 4. 增加 `homepage` 屬性到 `package.json` 中
+
+1. 在文字編輯器中打開 `package.json` 檔案。
    
     ```shell
     $ vi package.json
     ```
 
-    > In this tutorial, the text editor I'll be using is [vi](https://www.vim.org/). You can use any text editor you want; for example, [Visual Studio Code](https://code.visualstudio.com/).
+    > 這個教學將會使用 [vi](https://www.vim.org/) 文字編輯器。 但你也能使用任何你喜歡的編輯器。例如 [Visual Studio Code](https://code.visualstudio.com/)。
 
-2. Add a `homepage` property in this format\*: `https://{username}.github.io/{repo-name}`
+2. 以下面的格式新增 `homepage` 屬性
+ \*: `https://{username}.github.io/{repo-name}`
 
-    > \* For a [project site](https://pages.github.com/#project-site), that's the format. For a [user site](https://pages.github.com/#user-site), the format is: `https://{username}.github.io`. You can read more about the `homepage` property in the ["GitHub Pages" section](https://create-react-app.dev/docs/deployment/#github-pages) of the `create-react-app` documentation.
+  > \* 對於 [專案網頁](https://pages.github.com/#project-site)而言，你可以使用這樣的格式，但對 [使用者網頁](https://pages.github.com/#user-site)來說，你應該使用 `https://{username}.github.io`. 你可以在 `create-react-app` 文件中的["GitHub Pages" 章節](https://create-react-app.dev/docs/deployment/#github-pages) 了解更多關於 `homepage` 的資訊。
 
-    ```diff
+  ```diff
     {
       "name": "my-app",
       "version": "0.1.0",
-    + "homepage": "https://gitname.github.io/react-gh-pages",
+  +   "homepage": "https://gitname.github.io/react-gh-pages",
       "private": true,
-    ```
-At this point, the React app's `package.json` file includes a property named `homepage`.
+  ```
 
-### 5. Add deployment scripts to the `package.json` file
+這步之後，React 應用程式中的 `package.json` 新增了一個 `homepage` 屬性。
 
-1. Open the `package.json` file in a text editor (if it isn't already open in one).
+### 5. 將開發腳本加入 `package.json` 中
+
+1. 用編輯器打開 `package.json`
    
     ```shell
     $ vi package.json
     ```
 
-2. Add a `predeploy` property and a `deploy` property to the `scripts` object:
+2. 新增 `predeploy` (預部屬) 和 `deploy` (部屬)屬性到 `scripts` 物件底下:
 
     ```diff
     "scripts": {
@@ -149,99 +152,101 @@ At this point, the React app's `package.json` file includes a property named `ho
         "build": "react-scripts build",
     ```
 
-At this point, the  React app's `package.json` file includes deployment scripts.
+至此，React 應用程式中的 `package.json` 檔案中已經包含部署所需要的腳本了。
 
-### 6. Add a "remote" that points to the GitHub repository
+### 6. 新增一個指向 Github 存放庫的遠端存放庫
 
-1. Add a "[remote](https://git-scm.com/docs/git-remote)" to the local Git repository.
+1. 在本地存放庫中加入 "[remote](https://git-scm.com/docs/git-remote)" 
 
-    You can do that by issuing a command in this format: 
+    你可以使用下面的指令：
     
     ```shell
     $ git remote add origin https://github.com/{username}/{repo-name}.git
     ```
     
-    To customize that command for your situation, replace `{username}` with your GitHub username and replace `{repo-name}` with the name of the GitHub repository you created in Step 1.
+    如果要自訂該指令，將「{username}」替換為您的 GitHub 使用者名稱，並將「{repo-name}」替換為步驟 1 中建立的 GitHub 存放庫的名稱
 
-    In my case, I'll run:
+    在我的範例中，我會使用：
 
     ```shell
     $ git remote add origin https://github.com/gitname/react-gh-pages.git
     ```
 
     > That command tells Git where I want it to push things whenever I—or the `gh-pages` npm package acting on my behalf—issue the `$ git push` command from within this local Git repository.
+    >此指令告訴 git 我(或是 `gh-page` 套件的以我的身分執行時)要把檔案從本地存放庫推送到哪裡。
 
-At this point, the local repository has a "remote" whose URL points to the GitHub repository you created in Step 1.
+    至此，本地存放庫中有了一個指向步驟一中的存放庫的 `remote`
 
-### 7. Push the React app to the GitHub repository
+### 7. 將 React 應用程式推送到 Github 上
 
-1. Push the React app to the GitHub repository
+1. 將 React 應用程式推送到 Github 存放庫
 
     ```shell
     $ npm run deploy
     ```
 
-    > That will cause the `predeploy` and `deploy` scripts defined in `package.json` to run.
+    >這個指令會執行剛才在 `package.json` 中的預部屬、部屬指令。
     >
-    > Under the hood, the `predeploy` script will build a distributable version of the React app and store it in a folder named `build`. Then, the `deploy` script will push the contents of that folder to a new commit on the `gh-pages` branch of the GitHub repository, creating that branch if it doesn't already exist.
+    > 在後台，`predeploy` 腳本將構建 React 應用程式的可分發版本，並將其儲存在名為 `build` 的資料夾中。然後，`deploy` 腳本會將該資料夾的內容推送到 GitHub 存放庫的 `gh-pages` 分支中。如果該分支尚不存在，則此指令會建立該分支。
 
-    > By default, the new commit on the `gh-pages` branch will have a commit message of "Updates". You can [specify a custom commit message](https://github.com/gitname/react-gh-pages/issues/80#issuecomment-1042449820) via the `-m` option, like this:
+    >預設情況下，`gh-pages` 中的提交中都帶有 `Updates` 的訊息。不過你也能以 `-m` 選項 [自訂提交訊息](https://github.com/gitname/react-gh-pages/issues/80#issuecomment-1042449820)。如：
+
     > ```shell
     > $ npm run deploy -- -m "Deploy React app to GitHub Pages"
     > ```
 
-At this point, the GitHub repository contains a branch named `gh-pages`, which contains the files that make up the distributable version of the React app. However, we haven't configured GitHub Pages to _serve_ those files yet.
 
-### 8. Configure GitHub Pages
+此時，GitHub 存放庫包含一個名為 `gh-pages` 的分支，其中包含構成 React 應用程式可分發版本的檔案。但是，我們仍需使 GitHub Pages 設定成可以 _供應_ 這些網站的狀態。
 
-1. Navigate to the **GitHub Pages** settings page
-   1. In your web browser, navigate to the GitHub repository
-   1. Above the code browser, click on the tab labeled "Settings"
-   1. In the sidebar, in the "Code and automation" section, click on "Pages"
-1. Configure the "Build and deployment" settings like this: 
-   1. **Source**: Deploy from a branch
+### 8. 設定 GitHub Pages
+
+1. 前往 **GitHub Pages** 設定網站
+   1. 前往你的 Github 存放庫
+   2. 點擊檔案瀏覽器上面的設定(Settings)分頁
+   3. 點擊 程式碼與自動化(Code and automation) 之下的 "Pages"
+1. 將 "Build and deployment" 設定如下: 
+   1. **Source**: 由分支部署(Deploy from a branch)
    2. **Branch**: 
       - Branch: `gh-pages`
-      - Folder: `/ (root)`
-1. Click on the "Save" button
+      - Folder: `/ (根目錄)`
+1. 點擊 儲存(Save) 按鈕
 
-**That's it!** The React app has been deployed to GitHub Pages! :rocket:
+**完成!** React 應用程式成功部署到 GitHub Pages 上了！ :rocket:
 
-At this point, the React app is accessible to anyone who visits the `homepage` URL you specified in Step 4. For example, the React app I deployed is accessible at https://gitname.github.io/react-gh-pages.
+至此，你的 React 應用程式已經可以被所有來到第四部中 `homepage` 頁面的人看見。舉例來說，我部署的應用程式可以在https://gitname.github.io/react-gh-pages 被看見。
 
-### 9. (Optional) Store the React app's _source code_ on GitHub
+### 9. (非必要)將應用程式的原始碼存放在 GitHub 上
 
-In a previous step, the `gh-pages` npm package pushed the distributable version of the React app to a branch named `gh-pages` in the GitHub repository. However, the _source code_ of the React app is not yet stored on GitHub.
+在前一步中，`gh-pages` npm 套件將可分發的 React 應用程式版本推送到了存放庫中的 `gh-pages` 分支，不過，其 _原始碼_ 仍未被儲存在 GitHub 上。
 
-In this step, I'll show you how you can store the source code of the React app on GitHub.
+在這一步中，我將教你把 React 應用程式原始碼儲存在 GitHub 上的方法。
 
-1. Commit the changes you made while you were following this tutorial, to the `master` branch of the local Git repository; then, push that branch up to the `master` branch of the GitHub repository.
+1. 將擬在本教學中做出的所有修改提供到本地的 `master` 分支中；並將此分支推送到 GitHub 上的 `master` 分支。
 
     ```shell
     $ git add .
     $ git commit -m "Configure React app for deployment to GitHub Pages"
     $ git push origin master
     ```
+    >我建議你在此時探索 GitHub 存放庫。它將會有兩個分支：`master` 和`gh-pages`。`master` 分支中包含 React 應用程式的原始碼；而 `gh-pages` 分支將包含 React 應用程式的可分發版本。
 
-    > I recommend exploring the GitHub repository at this point. It will have two branches: `master` and `gh-pages`. The `master` branch will contain the React app's source code, while the `gh-pages` branch will contain the distributable version of the React app.
+# 參考資料
 
-# References
+1. [官方的 `create-react-app` 部署指引](https://create-react-app.dev/docs/deployment/#github-pages)
+2. [GitHub blog: 從任何分支建立並部署 GitHub Pages](https://github.blog/changelog/2020-09-03-build-and-deploy-github-pages-from-any-branch/)
+3. [如何使用自訂網域且留下 `CNAME` 檔案](https://github.com/gitname/react-gh-pages/issues/89#issuecomment-1207271670)
 
-1. [The official `create-react-app` deployment guide](https://create-react-app.dev/docs/deployment/#github-pages)
-2. [GitHub blog: Build and deploy GitHub Pages from any branch](https://github.blog/changelog/2020-09-03-build-and-deploy-github-pages-from-any-branch/)
-3. [Preserving the `CNAME` file when using a custom domain](https://github.com/gitname/react-gh-pages/issues/89#issuecomment-1207271670)
+# 後記
 
-# Notes
+-特別感謝 GitHub (the company) 給了我們 GitHub Pages 這個免費的網頁代管平台
+- 現在是時候將`create-react-app` 為我們創建的預設網頁變成獨特的樣子了！
+- 此存放庫中有兩個分支: 
+    - `master` - React 應用程式的原始碼
+    - `gh-pages` - 由原始碼 _建立_ 的 React 應用程式
 
-- Special thanks to GitHub (the company) for providing us with the GitHub Pages hosting service for free.
-- And now, time to turn the default React app generated by `create-react-app` into something unique!
-- This repository consists of two branches: 
-    - `master` - the _source code_ of the React app
-    - `gh-pages` - the React app _built from_ that source code
+ # 貢獻者們
 
- # Contributors
-
-Thanks to these people for contributing to the maintenance of this tutorial.
+謝謝這些為此存放庫貢獻的人們
 
 <!--
 
@@ -290,3 +295,4 @@ Note: I specified the avatars using HTML because, when I did so using Markdown,
 </a>
 
 This list is maintained manually—for now—and includes (a) each person who submitted a pull request that was eventually merged into `master`, and (b) each person who contributed in a different way (e.g. providing constructive feedback) and who approved of me including them in this list.
+這個清單是手動維護的——目前為止——他們做出了以下貢獻： （a） 提交成功被合併到 `master` 中的 Pull Request 的每個人，以及 （b） 以其他方式做出貢獻（例如提供建設性建議）並願意讓我將他們包含在此清單中的每個人。
