@@ -2,7 +2,6 @@
 <br> 
 [English (original)](https://github.com/gitname/react-gh-pages)
 <br>
-\* 使用 `create-react-app` 進行
 
 # 引言
 
